@@ -8,11 +8,13 @@ namespace UdpClientDemo
 {
     class Program
     {
-        static UdpClient udpClient;
+        private static string SERVER_IP = string.Empty;
+        private static UdpClient udpClient;
         static void Main(string[] args)
         {
+            SERVER_IP = "192.168.13.114";
             udpClient = new UdpClient(50000);       // 当前客户端使用的端口
-            udpClient.Connect("127.0.0.1", 61000); // 与服务器建立连接
+            udpClient.Connect(SERVER_IP, 61000); // 与服务器建立连接
             Console.WriteLine("客户端已启用......");
 
             #region 开启线程保持通讯
@@ -43,7 +45,7 @@ namespace UdpClientDemo
         /// </summary>
         static void ReciveMsg()
         {
-            var remoteIpEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 61000); // 远程端点，即发送消息方的端点
+            var remoteIpEndPoint = new IPEndPoint(IPAddress.Parse(SERVER_IP), 61000); // 远程端点，即发送消息方的端点
             while (true)
             {
                 byte[] receiveBytes = udpClient.Receive(ref remoteIpEndPoint); // 接收消息，得到数据报
